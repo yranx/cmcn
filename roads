@@ -1,0 +1,7 @@
+cmcn-Netty communication
+1.构建spring项目
+(1)File->new  project->maven 勾选create from archetype->选中 maven-archetype-quickstart....
+->maven依赖设置
+(2)在main下new Directory : resources-> 右键选择mark directory as ->Resources Root
+(3)pom.xml添加spring依赖
+   添加application-contxt.xml->Configure application context->create new application context
