@@ -5,3 +5,6 @@ cmcn-Netty communication
 (2)在main下new Directory : resources-> 右键选择mark directory as ->Resources Root
 (3)pom.xml添加spring依赖
    添加application-contxt.xml->Configure application context->create new application context
+
+2.https://www.cnblogs.com/s648667069/p/6401463.html
+https://github.com/648667069/shijunjie/tree/master/testRabbitMQ
