@@ -11,6 +11,8 @@ public class ApplicationContextHolder {
     private static ApplicationContext context;
     public static synchronized ApplicationContext getContext() {
         if (context == null) {
+//            ApplicationContext ctx = new ClassPathXmlApplicationContext("application-context.xml");
+//            return ctx;
             new ClassPathXmlApplicationContext("application-context.xml");
         }
         return context;

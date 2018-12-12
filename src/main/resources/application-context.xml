@@ -1,13 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
     http://www.springframework.org/schema/context
     http://www.springframework.org/schema/context/spring-context-3.1.xsd
     http://www.springframework.org/schema/tx
-    http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
+    http://www.springframework.org/schema/tx/spring-tx-3.1.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <context:component-scan base-package="com.cmcn" />
+    <context:property-placeholder location="classpath:app.properties" ignore-unresolvable="true" />
+    <aop:aspectj-autoproxy proxy-target-class="true" />
+    <import resource="classpath*:application-context-rabbitmq.xml"/>
+    <!-- 扫描指定package下所有带有如@controller,@services,@resource,@ods并把所注释的注册为Spring Beans -->
+    <context:component-scan base-package="com.cmcn" >
+        <context:exclude-filter type="annotation"
+                                expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+    <!-- 激活annotation功能 -->
+    <!--<context:annotation-config />-->
+    <!--<context:spring-configured />-->
+
+
+
+    <bean id="helloName" class="com.cmcn.controller.Hello">
+        <property name="name" value="Spring"></property>
+    </bean>
 </beans>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/rabbit
+       http://www.springframework.org/schema/rabbit/spring-rabbit.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <context:property-placeholder location="classpath:app.properties" ignore-unresolvable="true" />
+    <!--配置rabbitMQ连接-->
+    <rabbit:connection-factory id="connectionFactory" host="${rabbit.hosts}"
+                               port="${rabbit.port}" username="${rabbit.username}"
+                               password="${rabbit.password}" virtual-host="${rabbit.virtualHost}"
+                               channel-cache-size="50"/>
+    <!--通过指定下面的admin信息，当前producer中的exchange和queue会在rabbitmq服务器上自动生成 -->
+    <rabbit:admin id="connectAdmin" connection-factory="connectionFactory"/>
+
+
+    <!--定义消息队列-->
+    <rabbit:queue name="queueTest" durable="true" auto-declare="false" exclusive="false" declared-by="connectAdmin"/>
+    <!--绑定队列-->
+    <rabbit:direct-exchange name="exchangeTest" durable="true" auto-declare="false" declared-by="connectAdmin">
+        <rabbit:bindings>
+            <rabbit:binding queue="queueTest" key="queueTestKey"></rabbit:binding>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+    <!--创建消息队列模板,用于数据的接收和发送-->
+    <rabbit:template id="amqpTemplate" connection-factory="connectionFactory" exchange="exchangeTest"/>
+    <!--消息接收者-->
+    <bean id="messageReceiver" class="com.cmcn.mq.MessageConsumer"></bean>
+    <!--queue listener 观察 监听模式 当有消息到达时会通知监听在对应的队列上的监听对象-->
+    <rabbit:listener-container connection-factory="connectionFactory">
+        <rabbit:listener ref="messageReceiver" queues="queueTest"></rabbit:listener>
+    </rabbit:listener-container>
+
+
+
+    <!--定义queue -->
+    <rabbit:queue name="queueChris" durable="true" auto-declare="false" exclusive="false" declared-by="connectAdmin"/>
+    <!--绑定队列-->
+    <rabbit:direct-exchange name="exchangeTest" durable="true" auto-declare="false" declared-by="connectAdmin">
+        <rabbit:bindings>
+            <rabbit:binding queue="queueChris" key="queueChrisKey"></rabbit:binding>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+    <!--&lt;!&ndash;创建消息队列模板,用于数据的接收和发送&ndash;&gt;-->
+    <!--<rabbit:template id="amqpTemplate" connection-factory="connectionFactory" exchange="exchangeTest"/>-->
+    <!--消息接收者-->
+    <bean id="ChrisReceiver" class="com.cmcn.mq.ChrisConsumer"></bean>
+    <!--queue listener 观察 监听模式 当有消息到达时会通知监听在对应的队列上的监听对象-->
+    <rabbit:listener-container connection-factory="connectionFactory">
+        <rabbit:listener ref="ChrisReceiver" queues="queueChris"></rabbit:listener>
+    </rabbit:listener-container>
+</beans>
