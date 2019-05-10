@@ -20,7 +20,7 @@ public class MessageProducer {
     private Logger logger = LoggerFactory.getLogger(MessageProducer.class);
 
     @Resource(name = "amqpTemplate")
-//    @Autowired
+//   @Autowired
     private AmqpTemplate amqpTemplate;
 
 

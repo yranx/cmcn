@@ -14,7 +14,7 @@ import java.io.IOException;
  * @create 2018-11-21 15:03
  **/
 @Controller
-public class rabbitMQController {
+public class RabbitMQController {
 
     @Autowired
     private MessageProducer messageProducer;

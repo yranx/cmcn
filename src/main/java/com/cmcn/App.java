@@ -2,7 +2,7 @@ package com.cmcn;
 
 /**
  * Hello world!
- *
+ * @author ranx
  */
 public class App 
 {
